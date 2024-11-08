@@ -16,31 +16,34 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::middleware(['redirect.if.not.authenticated'])->group(function () {
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
+
+    Route::get('/about', function () {
+        return view('about');
+    })->name('about');
+
+    Route::get('/services', function () {
+        return view('services');
+    })->name('services');
+
+    Route::get('/contact', function () {
+        return view('contact');
+    })->name('contact');
+});
+
+// Homepage route
 Route::get('/', function () {
     return view('home');
 })->name('home');
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
-
-Route::get('/about', function () {
-    return view('about');
-})->name('about');
-
-Route::get('/services', function () {
-    return view('services');
-})->name('services');
-
-Route::get('/contact', function () {
-    return view('contact');
-})->name('contact');
 
 Route::get('register', [RegisteredUserController::class, 'create'])->name('register');
 Route::post('register', [RegisteredUserController::class, 'store']);
