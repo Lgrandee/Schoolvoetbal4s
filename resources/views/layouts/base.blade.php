@@ -4,28 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite(['resources/css/app.css', 'resources/js/app.js','resources/js/schoolvoetbal.js'])
     <title>Document</title>
 </head>
 <body>
 <header>
-    <nav class="flex items-center justify-between p-4 bg-blue-600">
-        <img  src="{{ asset('img/Logo_img.png') }}" alt="image description">
+    <div class="relative group">
+        <div class="flex items-center space-x-4 p-4">
+            <div id="logo" class="relative cursor-pointer">
+                <img src="{{ asset('img/Logo_img.png') }}" alt="Logo" class="h-12 w-12 transition-transform duration-300 ease-in-out group-hover:scale-110 group-hover:opacity-90 sparkle-effect">
 
-        <div class="relative group">
-            <div class="text-white font-bold text-xl cursor-pointer">
-                Logo
-            </div>
-
-            <!-- Links die uitklappen bij hover over het logo -->
-            <div class="absolute left-full top-0 ml-2 hidden group-hover:flex flex-col space-y-2">
-                <a href="#" class="text-white bg-blue-500 hover:bg-blue-700 px-4 py-2 rounded transition duration-300">Home</a>
-                <a href="#" class="text-white bg-blue-500 hover:bg-blue-700 px-4 py-2 rounded transition duration-300">About</a>
-                <a href="#" class="text-white bg-blue-500 hover:bg-blue-700 px-4 py-2 rounded transition duration-300">Services</a>
-                <a href="#" class="text-white bg-blue-500 hover:bg-blue-700 px-4 py-2 rounded transition duration-300">Contact</a>
+                <div id="navLinks" class="absolute left-full top-0 flex space-x-4 opacity-0 translate-x-[-100%] transition-all duration-300 ease-in-out group-hover:opacity-100 group-hover:translate-x-0">
+                    <a href="#" class="text-black text-lg hover:text-[#065f46] transition-transform transform hover:scale-110">Home</a>
+                    <a href="#" class="text-black text-lg hover:text-[#065f46] transition-transform transform hover:scale-110">About</a>
+                    <a href="#" class="text-black text-lg hover:text-[#065f46] transition-transform transform hover:scale-110">Services</a>
+                    <a href="#" class="text-black text-lg hover:text-[#065f46] transition-transform transform hover:scale-110">Contact</a>
+                </div>
             </div>
         </div>
-    </nav>
+    </div>
+
+
 
 </header>
 
