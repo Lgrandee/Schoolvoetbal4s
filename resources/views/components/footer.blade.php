@@ -2,9 +2,9 @@
     <div class="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
         <!-- Company Info -->
         <div>
-            <h2 class="text-xl font-bold rounded-lg">Weed with lani</h2>
+            <h2 class="text-xl font-bold rounded-lg">Schoolvoetbal</h2>
             <p class="mt-2 text-orange-100 rounded-lg">
-                feel like u are on Cloud lani
+                Dit is waar de echte winnaars ontstaan!
             </p>
         </div>
 
