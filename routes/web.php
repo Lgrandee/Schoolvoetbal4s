@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\MatchController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -32,6 +33,10 @@ Route::middleware(['redirect.if.not.authenticated'])->group(function () {
     Route::get('/contact', function () {
         return view('contact');
     })->name('contact');
+
+    Route::get('/admin', function () {
+        return view('admin');
+    })->name('admin');
 });
 
 // Homepage route
@@ -50,5 +55,13 @@ Route::post('register', [RegisteredUserController::class, 'store']);
 
 Route::get('login', [AuthenticatedSessionController::class, 'create'])->name('login');
 Route::post('login', [AuthenticatedSessionController::class, 'store']);
+
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/admin', function () {
+        return view('admin');
+    })->name('admin');
+    Route::get('/admin', [MatchController::class, 'index'])->name('admin');
+    Route::post('/assign-referee/{game}', [MatchController::class, 'assignReferee'])->name('assign.referee');
+});
 
 require __DIR__.'/auth.php';

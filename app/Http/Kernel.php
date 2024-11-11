@@ -76,5 +76,6 @@ class Kernel extends HttpKernel
     protected $routeMiddleware = [
         // Other middleware
         'redirect.if.not.authenticated' => \App\Http\Middleware\RedirectIfNotAuthenticated::class,
+        'admin' => \App\Http\Middleware\AdminMiddleware::class,
     ];
 }
