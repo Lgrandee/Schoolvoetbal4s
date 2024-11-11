@@ -5,17 +5,19 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Game; // Use the Game model
 use App\Models\Referee; // Assuming you have a Referee model
+use App\Models\Team; // Assuming you have a Team model
+use App\Models\Tournament; // Assuming you have a Tournament model
 
 class MatchController extends Controller
 {
     public function index()
     {
-        // Fetch all matches and referees
-        $matches = Game::all(); // Fetch all games
-        $referees = Referee::all(); // Fetch all referees
+        $matches = Game::with(['tournament', 'teamOne', 'teamTwo'])->get();
+        $referees = Referee::all();
+        $teams = Team::all(); // Fetch all teams
+        $tournaments = Tournament::all(); // Fetch all tournaments
 
-        // Pass the matches and referees to the view
-        return view('admin', compact('matches', 'referees'));
+        return view('admin', compact('matches', 'referees', 'teams', 'tournaments'));
     }
 
     public function assignReferee(Request $request, $gameId)

@@ -20,10 +20,22 @@
                         <td class="px-6 py-4 whitespace-nowrap">
                             <form method="POST" action="{{ route('assign.referee', $match->id) }}">
                                 @csrf
-                                <select name="referee_id" class="block w-full border-gray-300 rounded-md shadow-sm focus:border-green-500 focus:ring focus:ring-green-200">
-                                    <option>Select Referee</option>
-                                    @foreach($referees as $referee)
-                                        <option value="{{ $referee->id }}">{{ $referee->name }}</option>
+                                <select name="tournament_id" class="block w-full">
+                                    <option>Select Tournament</option>
+                                    @foreach($tournaments as $tournament)
+                                        <option value="{{ $tournament->id }}">{{ $tournament->title }}</option>
+                                    @endforeach
+                                </select>
+                                <select name="team_1" class="block w-full">
+                                    <option>Select Team 1</option>
+                                    @foreach($teams as $team)
+                                        <option value="{{ $team->id }}">{{ $team->name }}</option>
+                                    @endforeach
+                                </select>
+                                <select name="team_2" class="block w-full">
+                                    <option>Select Team 2</option>
+                                    @foreach($teams as $team)
+                                        <option value="{{ $team->id }}">{{ $team->name }}</option>
                                     @endforeach
                                 </select>
                                 <button type="submit" class="mt-2 bg-blue-500 text-white px-4 py-2 rounded">Assign</button>
