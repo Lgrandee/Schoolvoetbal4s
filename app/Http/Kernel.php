@@ -80,4 +80,5 @@ class Kernel extends HttpKernel
         'admin_or_referee' => \App\Http\Middleware\AdminOrRefereeMiddleware::class,
     ];
 
+
 }

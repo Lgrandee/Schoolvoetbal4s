@@ -8,18 +8,20 @@
                 <a href="{{ route('stand') }}" class="text-black text-lg hover:text-[#065f46] transition-transform transform hover:scale-110">Leaderboard</a>
                 <a href="{{ route('bracket') }}" class="text-black text-lg hover:text-[#065f46] transition-transform transform hover:scale-110">View the brackets</a>
                 @auth
-                <a href="{{ route('referee') }}" class="text-black text-lg hover:text-[#065f46] transition-transform transform hover:scale-110">Add your team to the tournament</a>
+                @if(Auth::user()->is_referee || Auth::user()->is_admin)
+                    <a href="{{ route('referee') }}" class="text-black text-lg hover:text-[#065f46] transition-transform transform hover:scale-110">Add your team to the tournament</a>
+                @endif
+                @if(Auth::user()->is_admin)
                     <a href="{{ route('admin') }}" class="text-black text-lg hover:text-[#065f46] transition-transform transform hover:scale-110">Admin</a>
-                    <form method="POST" action="{{ route('logout') }}">
-                        @csrf
-                        <button type="submit" class="text-black text-lg hover:text-[#065f46] transition-transform transform hover:scale-110">
-                            Log Out
-                        </button>
-                    </form>
-                @else
-                    <a href="{{ route('login') }}" class="text-black text-lg hover:text-[#065f46] transition-transform transform hover:scale-110">Log in</a>
-                    <a href="{{ route('register') }}" class="text-black text-lg hover:text-[#065f46] transition-transform transform hover:scale-110">Register</a>
-                @endauth
+                @endif
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit" class="text-black text-lg hover:text-[#065f46] transition-transform transform hover:scale-110">Log Out</button>
+                </form>
+            @else
+                <a href="{{ route('login') }}" class="text-black text-lg hover:text-[#065f46] transition-transform transform hover:scale-110">Log in</a>
+                <a href="{{ route('register') }}" class="text-black text-lg hover:text-[#065f46] transition-transform transform hover:scale-110">Register</a>
+            @endauth
             </div>
         </div>
 
