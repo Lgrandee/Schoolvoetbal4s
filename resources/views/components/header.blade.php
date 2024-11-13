@@ -9,15 +9,16 @@
                 <a href="{{ route('services') }}" class="text-black text-lg hover:text-[#065f46] transition-transform transform hover:scale-110">Services</a>
                 <a href="{{ route('contact') }}" class="text-black text-lg hover:text-[#065f46] transition-transform transform hover:scale-110">Contact</a>
                 @auth
-                <a href="{{ route('admin') }}" class="text-black text-lg hover:text-[#065f46] transition-transform transform hover:scale-110">Admin</a>
-                @endauth
-                @auth
+                    <a href="{{ route('admin') }}" class="text-black text-lg hover:text-[#065f46] transition-transform transform hover:scale-110">Admin</a>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
                         <button type="submit" class="text-black text-lg hover:text-[#065f46] transition-transform transform hover:scale-110">
                             Log Out
                         </button>
                     </form>
+                @else
+                    <a href="{{ route('login') }}" class="text-black text-lg hover:text-[#065f46] transition-transform transform hover:scale-110">Log in</a>
+                    <a href="{{ route('register') }}" class="text-black text-lg hover:text-[#065f46] transition-transform transform hover:scale-110">Register</a>
                 @endauth
             </div>
         </div>

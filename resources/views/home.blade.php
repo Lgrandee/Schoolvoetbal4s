@@ -4,12 +4,13 @@
             <h1 class="text-2xl font-bold">Welcome to Our Application</h1>
 
             @auth
-            <p class="mt-4">Hello, {{ Auth::user()->name }}! You have access to additional content.</p>
-            @else
-            <p class="mt-4">You are currently a guest. Please log in or register to access more features.</p>
-                <a href="{{ route('login') }}" class="text-blue-500">Log in</a> or
-                <a href="{{ route('register') }}" class="text-blue-500">Register</a>
+                @if(Auth::user()->is_admin)
+                    <p class="mt-4">Hello, {{ Auth::user()->name }}! You have access to additional content.</p>
+                @endif
             @endauth
+
+            <p class="mt-4">You are currently a guest. Please log in or register to access more features.</p>
         </div>
     </div>
+
 </x-base-layout>
