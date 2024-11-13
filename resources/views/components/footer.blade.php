@@ -7,19 +7,6 @@
                 Dit is waar de echte winnaars ontstaan!
             </p>
         </div>
-
-        <!-- Quick Links -->
-        <div>
-            <h2 class="text-xl font-bold">Snelkoppelingen</h2>
-            <ul class="mt-2">
-                <li class="mt-2"><a href="{{ route('home') }}" class="relative text-lg font-semibold w-fit block after:block after:content-[''] after:absolute after:h-[3px] after:bg-[#91BA8D] after:w-full after:scale-x-0 after:hover:scale-x-100 after:transition after:duration-300 after:origin-right">Home</a></li>
-                <li class="mt-2"><a href="{{ route('about') }}" class="relative text-lg font-semibold w-fit block after:block after:content-[''] after:absolute after:h-[3px] after:bg-[#91BA8D] after:w-full after:scale-x-0 after:hover:scale-x-100 after:transition after:duration-300 after:origin-right">Over ons</a></li>
-                <li class="mt-2"><a href="{{ route('services') }}" class="relative text-lg font-semibold w-fit block after:block after:content-[''] after:absolute after:h-[3px] after:bg-[#91BA8D] after:w-full after:scale-x-0 after:hover:scale-x-100 after:transition after:duration-300 after:origin-right">Diensten</a></li>
-                <li class="mt-2"><a href="{{ route('contact') }}" class="relative text-lg font-semibold w-fit block after:block after:content-[''] after:absolute after:h-[3px] after:bg-[#91BA8D] after:w-full after:scale-x-0 after:hover:scale-x-100 after:transition after:duration-300 after:origin-right">Contact</a></li>
-            </ul>
-        </div>
-
-        <!-- Social Media Links -->
         <div>
             <h2 class="text-xl font-bold">Volg ons</h2>
             <div class="mt-2 flex space-x-4">

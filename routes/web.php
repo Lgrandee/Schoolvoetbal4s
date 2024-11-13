@@ -21,17 +21,17 @@ Route::get('/', function () {
     return view('home');
 })->name('home');
 
-Route::get('/about', function () {
-    return view('about');
-})->name('about');
+Route::get('/stand', function () {
+    return view('stand');
+})->name('stand');
 
-Route::get('/services', function () {
-    return view('services');
-})->name('services');
+Route::get('/bracket', function () {
+    return view('bracket');
+})->name('bracket');
 
-Route::get('/contact', function () {
-    return view('contact');
-})->name('contact');
+Route::get('/bet', function () {
+    return view('bet');
+})->name('bet');
 
 Route::get('/admin', [MatchController::class, 'index'])->name('admin');
 
