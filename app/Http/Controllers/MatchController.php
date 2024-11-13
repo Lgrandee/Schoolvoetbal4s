@@ -32,4 +32,25 @@ class MatchController extends Controller
 
         return redirect()->back()->with('success', 'Referee assigned successfully!');
     }
+
+    public function showRefereeForm()
+    {
+        $tournaments = Tournament::all(); // Fetch all tournaments
+        return view('referee', compact('tournaments'));
+    }
+
+    public function storeTeam(Request $request)
+    {
+        $request->validate([
+            'team_name' => 'required|string|max:255',
+            'tournament_id' => 'required|exists:tournaments,id',
+        ]);
+
+        $team = new Team();
+        $team->name = $request->team_name;
+        $team->tournament_id = $request->tournament_id;
+        $team->save();
+
+        return redirect()->back()->with('success', 'Team added successfully!');
+    }
 }

@@ -29,9 +29,6 @@ Route::get('/bracket', function () {
     return view('bracket');
 })->name('bracket');
 
-Route::get('/bet', function () {
-    return view('bet');
-})->name('bet');
 
 Route::get('/admin', [MatchController::class, 'index'])->name('admin');
 
@@ -55,5 +52,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin', [MatchController::class, 'index'])->name('admin');
     Route::post('/assign-referee/{game}', [MatchController::class, 'assignReferee'])->name('assign.referee');
 });
+
+Route::get('/referee', [MatchController::class, 'showRefereeForm'])->name('referee')->middleware('admin_or_referee');
+Route::post('/referee', [MatchController::class, 'storeTeam'])->name('referee.store')->middleware('admin_or_referee');
 
 require __DIR__.'/auth.php';
