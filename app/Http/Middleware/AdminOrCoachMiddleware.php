@@ -6,11 +6,11 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class AdminOrRefereeMiddleware
+class AdminOrCoachMiddleware
 {
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::check() && (Auth::user()->is_admin || Auth::user()->is_referee)) {
+        if (Auth::check() && (Auth::user()->is_admin || Auth::user()->is_coach)) {
             return $next($request);
         }
 

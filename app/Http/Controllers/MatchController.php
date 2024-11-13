@@ -33,10 +33,10 @@ class MatchController extends Controller
         return redirect()->back()->with('success', 'Referee assigned successfully!');
     }
 
-    public function showRefereeForm()
+    public function showCoachForm()
     {
         $tournaments = Tournament::all(); // Fetch all tournaments
-        return view('referee', compact('tournaments'));
+        return view('coach', compact('tournaments'));
     }
 
     public function storeTeam(Request $request)

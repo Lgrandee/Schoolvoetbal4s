@@ -53,7 +53,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::post('/assign-referee/{game}', [MatchController::class, 'assignReferee'])->name('assign.referee');
 });
 
-Route::get('/referee', [MatchController::class, 'showRefereeForm'])->name('referee')->middleware('admin_or_referee');
-Route::post('/referee', [MatchController::class, 'storeTeam'])->name('referee.store')->middleware('admin_or_referee');
+Route::get('/coach', [MatchController::class, 'showCoachForm'])->name('coach')->middleware('admin_or_coach');
+Route::post('/coach', [MatchController::class, 'storeTeam'])->name('coach.store')->middleware('admin_or_coach');
 
 require __DIR__.'/auth.php';

@@ -77,7 +77,7 @@ class Kernel extends HttpKernel
         // Other middleware
         'redirect.if.not.authenticated' => \App\Http\Middleware\RedirectIfNotAuthenticated::class,
         'admin' => \App\Http\Middleware\AdminMiddleware::class,
-        'admin_or_referee' => \App\Http\Middleware\AdminOrRefereeMiddleware::class,
+        'admin_or_coach' => \App\Http\Middleware\AdminOrCoachMiddleware::class,
     ];
 
 

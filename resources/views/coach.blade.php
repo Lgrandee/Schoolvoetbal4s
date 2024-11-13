@@ -1,6 +1,6 @@
 <x-base-layout>
     @auth
-        @if(Auth::user()->is_admin || Auth::user()->is_referee)
+        @if(Auth::user()->is_admin || Auth::user()->is_coach)
             <div class="max-w-7xl mx-auto p-6 lg:p-8">
                 <h1 class="text-2xl font-bold">Add a Team</h1>
 
@@ -10,7 +10,7 @@
                     </div>
                 @endif
 
-                <form method="POST" action="{{ route('referee.store') }}" class="mt-4">
+                <form method="POST" action="{{ route('coach.store') }}" class="mt-4">
                     @csrf
                     <div class="mb-4">
                         <label for="team_name" class="block text-sm font-medium text-gray-700">Team Name</label>
