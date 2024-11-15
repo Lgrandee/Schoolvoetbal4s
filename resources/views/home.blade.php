@@ -12,5 +12,9 @@
             <p class="mt-4">You are currently a guest. Please log in or register to access more features.</p>
         </div>
     </div>
+    <div class="grid grid-cols-3 gap-4">
+        <img src="{{ asset('img/Voetbal_2.jpg') }}" alt="">
+        <img src="" alt="">
+    </div>
+   </x-base-layout>
 
-</x-base-layout>
