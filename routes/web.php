@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\MatchController;
+use App\Http\Controllers\TournamentController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -55,5 +56,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
 Route::get('/coach', [MatchController::class, 'showCoachForm'])->name('coach')->middleware('admin_or_coach');
 Route::post('/coach', [MatchController::class, 'storeTeam'])->name('coach.store')->middleware('admin_or_coach');
+
+Route::get('/tournament/create', [TournamentController::class, 'create'])->name('tournament.create')->middleware('admin');
+Route::post('/tournament', [TournamentController::class, 'store'])->name('tournament.store')->middleware('admin');
 
 require __DIR__.'/auth.php';
