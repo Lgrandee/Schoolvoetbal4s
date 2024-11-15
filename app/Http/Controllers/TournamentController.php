@@ -22,7 +22,6 @@ class TournamentController extends Controller
         $tournament = new Tournament();
         $tournament->title = $request->title;
         $tournament->max_teams = $request->max_teams;
-        $tournament->started = false; // Set to false initially
         $tournament->save();
 
         return redirect()->route('bracket')->with('success', 'Tournament created successfully!');

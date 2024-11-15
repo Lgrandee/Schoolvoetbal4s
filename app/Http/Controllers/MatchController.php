@@ -20,6 +20,12 @@ class MatchController extends Controller
         return view('admin', compact('matches', 'referees', 'teams', 'tournaments'));
     }
 
+    public function showBracket()
+    {
+        $tournaments = Tournament::with('games')->get(); // Fetch tournaments with games
+        return view('bracket', compact('tournaments'));
+    }
+
     public function assignReferee(Request $request, $gameId)
     {
         $request->validate([

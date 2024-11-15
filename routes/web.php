@@ -60,4 +60,6 @@ Route::post('/coach', [MatchController::class, 'storeTeam'])->name('coach.store'
 Route::get('/tournament/create', [TournamentController::class, 'create'])->name('tournament.create')->middleware('admin');
 Route::post('/tournament', [TournamentController::class, 'store'])->name('tournament.store')->middleware('admin');
 
+Route::get('/bracket', [MatchController::class, 'showBracket'])->name('bracket');
+
 require __DIR__.'/auth.php';

@@ -9,5 +9,10 @@ class Tournament extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title', 'max_teams', 'started'];
+    protected $fillable = ['title', 'max_teams'];
+
+    public function games()
+    {
+        return $this->hasMany(Game::class);
+    }
 }
