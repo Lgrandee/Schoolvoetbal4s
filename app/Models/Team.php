@@ -9,5 +9,5 @@ class Team extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'players'];
+    protected $fillable = ['name', 'coach', 'team_members', 'points', 'logo_path'];
 }
