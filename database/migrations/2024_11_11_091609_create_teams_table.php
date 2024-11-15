@@ -6,27 +6,18 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
-    public function up(): void
+    public function up()
     {
         Schema::create('teams', function (Blueprint $table) {
             $table->id();
-            $table->text('name');
-            $table->string('coach');
-            $table->integer('team_members');
-            $table->integer('points');
-            $table->string('logo_path')->nullable();
+            $table->string('name');
+            $table->json('players'); // Assuming players are stored as JSON
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
+    public function down()
     {
-        //
+        Schema::dropIfExists('teams');
     }
 };

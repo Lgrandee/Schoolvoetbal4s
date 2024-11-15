@@ -4,7 +4,6 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\MatchController;
-use App\Http\Controllers\TeamController;
 use App\Http\Controllers\TournamentController;
 use Illuminate\Support\Facades\Route;
 
@@ -19,27 +18,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware(['redirect.if.not.authenticated'])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
-
-    Route::get('/creatteam', function () {
-        return view('creatteam');
-    })->name('creatteam');
-
-    Route::post('/creatteam', [TeamController::class, 'store'])->name('team.store');
-
-    Route::get('/services', function () {
-        return view('services');
-    })->name('services');
-
-    Route::get('/contact', function () {
-        return view('contact');
-    })->name('contact');
-});
-
-// Homepage route
 Route::get('/', function () {
     return view('home');
 })->name('home');
@@ -52,6 +30,9 @@ Route::get('/bracket', function () {
     return view('bracket');
 })->name('bracket');
 
+Route::get('/creatteam', function () {
+    return view('creatteam');
+})->name('creatteam');
 
 Route::get('/admin', [MatchController::class, 'index'])->name('admin');
 
