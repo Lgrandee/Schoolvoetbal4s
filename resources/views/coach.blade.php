@@ -10,21 +10,20 @@
                     </div>
                 @endif
 
-                <form method="POST" action="{{ route('coach.store') }}" class="mt-4">
+                <form method="POST" action="{{ route('coach.store') }}" class="mt-4" enctype="multipart/form-data">
                     @csrf
-                    <div class="mb-4">
-                        <label for="team_name" class="block text-sm font-medium text-gray-700">Team Name</label>
-                        <input type="text" name="team_name" id="team_name" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50" required>
-                    </div>
-                    <div class="mb-4">
-                        <label for="tournament_id" class="block text-sm font-medium text-gray-700">Select Tournament</label>
-                        <select name="tournament_id" id="tournament_id" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50" required>
-                            <option value="">Select Tournament</option>
-                            @foreach($tournaments as $tournament)
-                                <option value="{{ $tournament->id }}">{{ $tournament->title }}</option>
-                            @endforeach
-                        </select>
-                    </div>
+                    <label class="block text-sm font-medium text-gray-700"for="name">Naam:</label>
+                    <input class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50" type="text" id="name" name="name" required><br><br>
+
+                    <label class="block text-sm font-medium text-gray-700" for="coach">Coach:</label>
+                    <input class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50" type="text" id="coach" name="coach" required><br><br>
+
+                    <label class="block text-sm font-medium text-gray-700" for="player_count">Teamleden:</label>
+                    <input class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50" type="number" id="player_count" name="player_count" required><br><br>
+
+                    <label class="block text-sm font-medium text-gray-700" for="logo">Logo:</label>
+                    <input type="file" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50" id="logo" name="logo" accept="image/*" required><br><br>
+
                     <button type="submit" class="mt-2 bg-green-700 text-white px-4 py-2 rounded">Add Team</button>
                 </form>
             </div>

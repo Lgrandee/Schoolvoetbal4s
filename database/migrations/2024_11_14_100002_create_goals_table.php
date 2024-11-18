@@ -8,17 +8,17 @@ return new class extends Migration
 {
     public function up()
     {
-        Schema::create('teams', function (Blueprint $table) {
+        Schema::create('goals', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->integer('points')->default(0);
-            $table->foreignId('creator_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('player_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('game_id')->constrained('games')->onDelete('cascade');
+            $table->integer('minute');
             $table->timestamps();
         });
     }
 
     public function down()
     {
-        Schema::dropIfExists('teams');
+        Schema::dropIfExists('goals');
     }
 };

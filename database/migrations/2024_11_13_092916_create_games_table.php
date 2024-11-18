@@ -10,11 +10,13 @@ return new class extends Migration
     {
         Schema::create('games', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('tournament_id')->constrained()->onDelete('cascade');
-            $table->foreignId('team_1')->constrained('teams')->onDelete('cascade');
-            $table->foreignId('team_2')->constrained('teams')->onDelete('cascade');
-            $table->unsignedInteger('team_1_score')->default(0);
-            $table->unsignedInteger('team_2_score')->default(0);
+            $table->foreignId('team1_id')->constrained('teams')->onDelete('cascade');
+            $table->foreignId('team2_id')->constrained('teams')->onDelete('cascade');
+            $table->integer('team1_score')->nullable();
+            $table->integer('team2_score')->nullable();
+            $table->string('field');
+            $table->foreignId('referee_id')->constrained('users')->onDelete('cascade');
+            $table->string('time');
             $table->timestamps();
         });
     }

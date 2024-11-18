@@ -22,17 +22,9 @@ Route::get('/', function () {
     return view('home');
 })->name('home');
 
-Route::get('/stand', function () {
-    return view('stand');
-})->name('stand');
+Route::get('/stand', [MatchController::class, 'showTeams'])->name('stand');
 
-Route::get('/bracket', function () {
-    return view('bracket');
-})->name('bracket');
-
-Route::get('/creatteam', function () {
-    return view('creatteam');
-})->name('creatteam');
+Route::get('/bracket', [MatchController::class, 'showBracket'])->name('bracket');
 
 Route::get('/admin', [MatchController::class, 'index'])->name('admin');
 
@@ -45,16 +37,9 @@ Route::post('register', [RegisteredUserController::class, 'store']);
 Route::get('login', [AuthenticatedSessionController::class, 'create'])->name('login');
 Route::post('login', [AuthenticatedSessionController::class, 'store']);
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->name('dashboard');
-
 Route::middleware(['auth', 'admin'])->group(function () {
-    Route::get('/admin', function () {
-        return view('admin');
-    })->name('admin');
-    Route::get('/admin', [MatchController::class, 'index'])->name('admin');
     Route::post('/assign-referee/{game}', [MatchController::class, 'assignReferee'])->name('assign.referee');
+    Route::post('/games/{gameId}/update-scores', [MatchController::class, 'updateGameScores'])->name('games.updateScores');
 });
 
 Route::get('/coach', [MatchController::class, 'showCoachForm'])->name('coach')->middleware('admin_or_coach');
@@ -62,7 +47,5 @@ Route::post('/coach', [MatchController::class, 'storeTeam'])->name('coach.store'
 
 Route::get('/tournament/create', [TournamentController::class, 'create'])->name('tournament.create')->middleware('admin');
 Route::post('/tournament', [TournamentController::class, 'store'])->name('tournament.store')->middleware('admin');
-
-Route::get('/bracket', [MatchController::class, 'showBracket'])->name('bracket');
 
 require __DIR__.'/auth.php';

@@ -7,12 +7,6 @@ use Illuminate\Http\Request;
 class TeamController extends Controller
 {
 
-    public function create()
-    {
-        return view('creatteam');
-    }
-
-
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -20,12 +14,12 @@ class TeamController extends Controller
             'coach' => 'required|string',
             'team_members' => 'required|integer',
             'points' => 'required|integer',
-            'logo_path' => 'nullable|string',
+            'logo' => 'nullable|string',
         ]);
 
         if ($request->hasFile('logo')) {
             $filePath = $request->file('logo')->store('logos', 'public');
-            $validated['logo_path'] = $filePath;
+            $validated['logo'] = $filePath;
         }
 
         Team::create($validated);
