@@ -23,5 +23,33 @@
                 </table>
             @endif
         </div>
+
+        <div class="mt-6">
+            <h2 class="text-xl font-bold">Tournaments</h2>
+            @if ($tournaments->isEmpty())
+                <p>No tournaments available.</p>
+            @else
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-100">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Title</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Max Teams</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        @foreach($tournaments as $tournament)
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap">{{ $tournament->title }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap">{{ $tournament->max_teams }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <a href="{{ route('tournament.edit', $tournament) }}" class="text-blue-600 hover:text-blue-900">Edit</a>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            @endif
+        </div>
     </div>
 </x-base-layout>

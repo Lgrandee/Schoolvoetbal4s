@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Game;
 use App\Models\Team;
 use App\Models\Goal;
+use App\Models\Tournament;
 use Illuminate\Http\Request;
 
 class MatchController extends Controller
@@ -12,7 +13,8 @@ class MatchController extends Controller
     public function index()
     {
         $games = Game::with(['teamOne', 'teamTwo', 'referee'])->get();
-        return view('admin', compact('games'));
+        $tournaments = Tournament::all(); // Fetch all tournaments
+        return view('admin', compact('games', 'tournaments'));
     }
 
     public function updateMatchScores(Request $request, $gameId)
@@ -58,5 +60,59 @@ class MatchController extends Controller
         Goal::create($validated);
 
         return redirect()->back()->with('success', 'Goal recorded!');
+    }
+
+    public function showCoachForm()
+    {
+        $tournaments = Tournament::all(); // Fetch all tournaments
+        return view('coach', compact('tournaments'));
+    }
+
+    public function storeTeam(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string',
+            'coach' => 'required|string',
+            'player_count' => 'required|integer',
+            'logo' => 'required|image',
+        ]);
+
+        if ($request->hasFile('logo')) {
+            $filePath = $request->file('logo')->store('logos', 'public');
+            $validated['logo'] = $filePath;
+        }
+
+        $validated['creator_id'] = auth()->id();
+
+        Team::create($validated);
+
+        return redirect()->route('coach')->with('success', 'Team added successfully!');
+    }
+
+    public function showBracket(Tournament $tournament)
+    {
+        $teams = $tournament->teams; // Get teams associated with the tournament
+
+        // Create matchups (assuming 16 teams)
+        $matchups = [];
+        for ($i = 0; $i < count($teams); $i += 2) {
+            if (isset($teams[$i + 1])) {
+                $matchups[] = [$teams[$i], $teams[$i + 1]];
+            }
+        }
+
+        return view('tournament.bracket', compact('tournament', 'matchups'));
+    }
+
+    public function showTeams()
+    {
+        $teams = Team::all(); // Fetch all teams
+        return view('stand', compact('teams')); // Return a view with the teams data
+    }
+
+    public function showBrackets()
+    {
+        $tournaments = Tournament::all(); // Fetch all tournaments
+        return view('brackets', compact('tournaments'));
     }
 }

@@ -30,4 +30,9 @@ class Game extends Model
     {
         return $this->hasMany(Goal::class);
     }
+
+    public function tournament()
+    {
+        return $this->belongsTo(Tournament::class);
+    }
 }

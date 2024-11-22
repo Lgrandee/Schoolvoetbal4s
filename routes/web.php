@@ -48,4 +48,13 @@ Route::post('/coach', [MatchController::class, 'storeTeam'])->name('coach.store'
 Route::get('/tournament/create', [TournamentController::class, 'create'])->name('tournament.create')->middleware('admin');
 Route::post('/tournament', [TournamentController::class, 'store'])->name('tournament.store')->middleware('admin');
 
+Route::resource('tournament', TournamentController::class);
+Route::post('tournament/{tournament}/add-team', [TournamentController::class, 'addTeam'])->name('tournament.addTeam');
+Route::post('tournament/{tournament}/add-referee', [TournamentController::class, 'addReferee'])->name('tournament.addReferee');
+
+Route::get('tournament/{tournament}/bracket', [TournamentController::class, 'showBracket'])->name('tournament.bracket');
+Route::get('brackets', [MatchController::class, 'showBrackets'])->name('brackets');
+
+Route::get('admin/tournament/{tournament}/edit', [TournamentController::class, 'edit'])->name('admin.tournament.edit');
+
 require __DIR__.'/auth.php';
