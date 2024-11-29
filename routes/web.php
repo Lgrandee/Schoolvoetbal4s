@@ -42,8 +42,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::post('/games/{gameId}/update-scores', [MatchController::class, 'updateGameScores'])->name('games.updateScores');
 });
 
-Route::get('/coach', [MatchController::class, 'showCoachForm'])->name('coach')->middleware('admin_or_coach');
-Route::post('/coach', [MatchController::class, 'storeTeam'])->name('coach.store')->middleware('admin_or_coach');
+Route::get('/coach', [MatchController::class, 'showCoachForm'])->name('coach');
+Route::post('/coach', [MatchController::class, 'storeTeam'])->name('coach.store');
 
 Route::get('/tournament/create', [TournamentController::class, 'create'])->name('tournament.create')->middleware('admin');
 Route::post('/tournament', [TournamentController::class, 'store'])->name('tournament.store')->middleware('admin');

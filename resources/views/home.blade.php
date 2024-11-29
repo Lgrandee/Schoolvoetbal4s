@@ -1,20 +1,38 @@
 <x-base-layout>
-    <div class="relative sm:flex sm:justify-center sm:items-center min-h-screen bg-center bg-orange-100 dark:bg-dots-lighter dark:bg-orange-100 selection:bg-red-500 selection:text-white">
-        <div class="text-center">
-            <h1 class="text-2xl font-bold">Welcome to Our Application</h1>
+    <div class="text-center">
+        @auth
+            @if(Auth::user()->is_admin)
+                <p class="mt-4 text-2xl font-bold rainbow">Hello, {{ Auth::user()->name }}! You have access to additional content.</p>
+            @endif
+        @endauth
+    </div>
 
-            @auth
-                @if(Auth::user()->is_admin)
-                    <p class="mt-4">Hello, {{ Auth::user()->name }}! You have access to additional content.</p>
-                @endif
-            @endauth
+    <div class="grid grid-cols-3 gap-4 p-6">
+        <div class="col-span-1">
+            <h2 class="text-xl font-bold">Top 5:</h2>
+            <ol class="list-decimal pl-5">
+                <li> --</li>
+                <li> --</li>
+                <li> --</li>
+                <li> --</li>
+                <li> --</li>
+            </ol>
+        </div>
 
-            <p class="mt-4">You are currently a guest. Please log in or register to access more features.</p>
+        <div class="col-span-2">
+            <h2 class="text-xl font-bold">Naar het wedstrijdschema</h2>
+            <div class="border-2 border-dashed h-48 flex items-center justify-center">
+                <p class="text-center">Hier komt de afbeelding</p>
+            </div>
         </div>
     </div>
-    <div class="grid grid-cols-3 gap-4">
-        <img src="{{ asset('img/Voetbal_2.jpg') }}" alt="">
-        <img src="" alt="">
-    </div>
-   </x-base-layout>
 
+    <div class="grid grid-cols-3 gap-4 p-6">
+        <div class="col-span-1">
+            <h2 class="text-xl font-bold">Mijn Team:</h2>
+            <div class="border-2 border-dashed h-48">
+                <p class="text-center">Team details here</p>
+            </div>
+        </div>
+    </div>
+</x-base-layout>

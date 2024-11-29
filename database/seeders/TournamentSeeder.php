@@ -22,8 +22,7 @@ class TournamentSeeder extends Seeder
         for ($i = 1; $i <= 16; $i++) {
             $team = Team::create([
                 'name' => 'Team ' . $i,
-                'points' => 0,
-                'creator_id' => 1, // Adjust as necessary
+                'players' => json_encode([]), // Set players to an empty JSON array
             ]);
             $tournament->teams()->attach($team->id);
         }

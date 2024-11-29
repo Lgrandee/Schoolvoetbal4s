@@ -1,6 +1,5 @@
 <x-base-layout>
     @auth
-        @if(Auth::user()->is_admin || Auth::user()->is_coach)
             <div class="max-w-7xl mx-auto p-6 lg:p-8">
                 <h1 class="text-2xl font-bold">Add a Team</h1>
 
@@ -27,12 +26,6 @@
                     <button type="submit" class="mt-2 bg-green-700 text-white px-4 py-2 rounded">Add Team</button>
                 </form>
             </div>
-        @else
-            <div class="max-w-7xl mx-auto p-6 lg:p-8">
-                <h1 class="text-2xl font-bold">Access Denied</h1>
-                <p>You do not have permission to view this page.</p>
-            </div>
-        @endif
     @else
         <div class="max-w-7xl mx-auto p-6 lg:p-8">
             <h1 class="text-2xl font-bold">Access Denied</h1>

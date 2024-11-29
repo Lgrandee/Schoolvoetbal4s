@@ -8,9 +8,7 @@
                 <a href="{{ route('stand') }}" class="text-black text-lg hover:text-[#065f46] transition-transform transform hover:scale-110">Leaderboard</a>
                 <a href="{{ route('brackets') }}" class="text-black text-lg hover:text-[#065f46] transition-transform transform hover:scale-110">View the brackets</a>
                 @auth
-                @if(Auth::user()->is_coach || Auth::user()->is_admin)
-                    <a href="{{ route('coach') }}" class="text-black text-lg hover:text-[#065f46] transition-transform transform hover:scale-110">Add your team to the tournament</a>
-                @endif
+                <a href="{{ route('coach') }}" class="text-black text-lg hover:text-[#065f46] transition-transform transform hover:scale-110">Add your team to the tournament</a>
                 @if(Auth::user()->is_admin)
                     <a href="{{ route('admin') }}" class="text-black text-lg hover:text-[#065f46] transition-transform transform hover:scale-110">Admin</a>
                 @endif

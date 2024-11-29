@@ -15,7 +15,6 @@ class AdminSeeder extends Seeder
             'password' => bcrypt('password123'), // Use a secure password
             'is_admin' => true,
             'is_referee' => false,
-            'is_coach' => false,
         ]);
     }
 }

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
-            $table->unsignedBigInteger('team_id')->nullable();
+            $table->foreignId('team_id')->nullable()->constrained('teams')->onDelete('set null');
             $table->enum('role', ['user', 'referee', 'admin'])->default('user');
             $table->timestamps();
         });

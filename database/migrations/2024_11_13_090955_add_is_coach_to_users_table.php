@@ -8,9 +8,6 @@ class AddIsCoachToUsersTable extends Migration
 {
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->boolean('is_coach')->default(false); // Add the is_coach column
-        });
     }
 
     public function down()
