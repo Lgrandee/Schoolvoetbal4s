@@ -44,6 +44,7 @@
                             <td class="px-6 py-4 whitespace-nowrap">{{ $tournament->max_teams }}</td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <a href="{{ route('tournament.edit', $tournament) }}" class="text-blue-600 hover:text-blue-900">Edit</a>
+                                <a href="{{ route('tournament.destroy', $tournament)}}" class="text-red-600 hover:text-red-900">Delete</a>
                             </td>
                         </tr>
                         @endforeach

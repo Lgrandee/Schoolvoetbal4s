@@ -93,7 +93,10 @@ class MatchController extends Controller
     {
         $teams = $tournament->teams; // Get teams associated with the tournament
 
-        // Create matchups (assuming 16 teams)
+        // Shuffle the teams to randomize matchups
+        $teams = $teams->shuffle();
+
+        // Create matchups
         $matchups = [];
         for ($i = 0; $i < count($teams); $i += 2) {
             if (isset($teams[$i + 1])) {

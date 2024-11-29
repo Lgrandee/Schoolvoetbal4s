@@ -56,5 +56,8 @@ Route::get('tournament/{tournament}/bracket', [TournamentController::class, 'sho
 Route::get('brackets', [MatchController::class, 'showBrackets'])->name('brackets');
 
 Route::get('admin/tournament/{tournament}/edit', [TournamentController::class, 'edit'])->name('admin.tournament.edit');
+Route::get('admin/tournament/{tournament}/destroy', [TournamentController::class, 'destroy'])->name('admin.tournament.destroy');
+
+
 
 require __DIR__.'/auth.php';
