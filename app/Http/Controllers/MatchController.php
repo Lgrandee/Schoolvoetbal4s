@@ -68,27 +68,6 @@ class MatchController extends Controller
         return view('coach', compact('tournaments'));
     }
 
-    public function storeTeam(Request $request)
-    {
-        $validated = $request->validate([
-            'name' => 'required|string',
-            'coach' => 'required|string',
-            'player_count' => 'required|integer',
-            'logo' => 'required|image',
-        ]);
-
-        if ($request->hasFile('logo')) {
-            $filePath = $request->file('logo')->store('logos', 'public');
-            $validated['logo'] = $filePath;
-        }
-
-        $validated['creator_id'] = auth()->id();
-
-        Team::create($validated);
-
-        return redirect()->route('coach')->with('success', 'Team added successfully!');
-    }
-
     public function showBracket(Tournament $tournament)
     {
         $teams = $tournament->teams; // Get teams associated with the tournament
@@ -117,5 +96,13 @@ class MatchController extends Controller
     {
         $tournaments = Tournament::all(); // Fetch all tournaments
         return view('brackets', compact('tournaments'));
+    }
+
+    public function showEditTeamForm()
+    {
+        $user = auth()->user();
+        $team = $user->team; // Assuming you have a relationship set up in the User model
+
+        return view('coach', compact('team'));
     }
 }

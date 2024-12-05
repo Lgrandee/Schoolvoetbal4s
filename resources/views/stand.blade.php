@@ -12,7 +12,6 @@
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Coach</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Player Count</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Points</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Logo</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
@@ -23,12 +22,6 @@
                             <td class="px-6 py-4 whitespace-nowrap">{{ $team->coach }}</td>
                             <td class="px-6 py-4 whitespace-nowrap">{{ $team->player_count }}</td>
                             <td class="px-6 py-4 whitespace-nowrap">{{ $team->points }}</td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                @if($team->logo)
-                                    <img src="{{ asset('storage/' . $team->logo) }}" alt="Logo" class="h-10 w-10">
-                                @else
-                                    No Logo
-                                @endif
                             </td>
                         </tr>
                     @endforeach

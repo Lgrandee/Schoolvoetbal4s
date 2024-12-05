@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Team;
 
 class TeamController extends Controller
 {
@@ -13,7 +14,6 @@ class TeamController extends Controller
             'name' => 'required|string',
             'coach' => 'required|string',
             'team_members' => 'required|integer',
-            'points' => 'required|integer',
             'logo' => 'nullable|string',
         ]);
 
@@ -27,5 +27,11 @@ class TeamController extends Controller
         return redirect()->route('home')->with('success', 'Team toegevoegd!');
     }
 
+    public function showHome()
+    {
+        $topTeams = Team::orderBy('id')->take(5)->get();
+
+        return view('home', compact('topTeams'));
+    }
 
 }

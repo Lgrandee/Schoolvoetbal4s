@@ -38,6 +38,6 @@ class Game extends Model
 
     public function team()
     {
-        return $this->belongsTo(Team::class);
+        return $this->hasOne(Team::class, 'creator_id');
     }
 }

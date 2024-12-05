@@ -11,11 +11,9 @@
         <div class="col-span-1">
             <h2 class="text-xl font-bold">Top 5:</h2>
             <ol class="list-decimal pl-5">
-                <li> --</li>
-                <li> --</li>
-                <li> --</li>
-                <li> --</li>
-                <li> --</li>
+                @foreach($topTeams as $team)
+                    <li>{{ $team->name }} - {{ $team->points }} points</li>
+                @endforeach
             </ol>
         </div>
 

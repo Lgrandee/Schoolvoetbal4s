@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\MatchController;
+use App\Http\Controllers\TeamController;
 use App\Http\Controllers\TournamentController;
 use Illuminate\Support\Facades\Route;
 
@@ -21,6 +22,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('home');
 })->name('home');
+
 
 Route::get('/stand', [MatchController::class, 'showTeams'])->name('stand');
 
@@ -58,6 +60,8 @@ Route::get('brackets', [MatchController::class, 'showBrackets'])->name('brackets
 Route::get('admin/tournament/{tournament}/edit', [TournamentController::class, 'edit'])->name('admin.tournament.edit');
 Route::get('admin/tournament/{tournament}/destroy', [TournamentController::class, 'destroy'])->name('admin.tournament.destroy');
 
+Route::get('/', [TeamController::class, 'showHome'])->name('home');
 
+Route::get('/coach/edit', [MatchController::class, 'showEditTeamForm'])->name('coach.edit')->middleware('auth');
 
 require __DIR__.'/auth.php';

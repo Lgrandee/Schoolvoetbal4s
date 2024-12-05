@@ -9,7 +9,7 @@ class Team extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'points', 'creator_id'];
+    protected $fillable = ['name', 'points', 'creator_id', 'players'];
 
     public function matches()
     {
