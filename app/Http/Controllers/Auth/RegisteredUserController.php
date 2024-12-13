@@ -50,6 +50,9 @@ class RegisteredUserController extends Controller
             'players' => json_encode([]),
         ]);
 
+        // Update the user with the team_id
+        $user->update(['team_id' => $team->id]);
+
         return redirect(RouteServiceProvider::HOME);
     }
 }

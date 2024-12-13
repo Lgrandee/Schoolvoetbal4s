@@ -36,12 +36,14 @@
         <h2 class="text-xl font-bold mt-6">Add Referees</h2>
         <form method="POST" action="{{ route('tournament.addReferee', $tournament) }}" class="mt-4">
             @csrf
-            @foreach($referees as $index => $referee)
-                <div class="mb-4">
-                    <label for="referee_name_{{ $index }}" class="block text-sm font-medium text-gray-700">Referee Name</label>
-                    <input type="text" name="referee_name[]" id="referee_name_{{ $index }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50" required>
-                </div>
-            @endforeach
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700">Select Referees</label>
+                <select name="referee_id[]" multiple class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50" required>
+                    @foreach($referees as $referee)
+                        <option value="{{ $referee->id }}">{{ $referee->name }}</option>
+                    @endforeach
+                </select>
+            </div>
             <button type="submit" class="mt-2 bg-blue-700 text-white px-4 py-2 rounded">Add Referees</button>
         </form>
     </div>

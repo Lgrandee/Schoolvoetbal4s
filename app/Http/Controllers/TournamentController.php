@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Tournament;
 use App\Models\Team;
-use App\Models\Referee;
+use App\Models\User;
 
 class TournamentController extends Controller
 {
@@ -32,7 +32,7 @@ class TournamentController extends Controller
     public function edit(Tournament $tournament)
     {
         $teams = Team::all(); // Fetch all teams
-        $referees = Referee::all(); // Fetch all referees
+        $referees = User::where('role', 'referee')->get(); // Get users with referee role
         return view('tournament.edit', compact('tournament', 'teams', 'referees'));
     }
 
@@ -64,15 +64,16 @@ class TournamentController extends Controller
     public function addReferee(Request $request, Tournament $tournament)
     {
         $request->validate([
-            'referee_name.*' => 'required|string|max:255', // Validate each referee name
+            'referee_id.*' => 'required|exists:users,id',
         ]);
 
-        foreach ($request->referee_name as $refereeName) {
-            // Assuming you have a Referee model and a relationship set up
-            $tournament->referees()->create(['name' => $refereeName]);
+        foreach ($request->referee_id as $refereeId) {
+            // Add the referee (user) to the tournament
+            $tournament->referees()->attach($refereeId);
         }
 
-        return redirect()->route('admin.tournament.edit', $tournament)->with('success', 'Referees added to tournament!');
+        return redirect()->route('admin.tournament.edit', $tournament)
+            ->with('success', 'Referees added to tournament!');
     }
 
     public function showBracket(Tournament $tournament)

@@ -64,8 +64,10 @@ class MatchController extends Controller
 
     public function showCoachForm()
     {
-        $tournaments = Tournament::all(); // Fetch all tournaments
-        return view('coach', compact('tournaments'));
+        $user = auth()->user();
+        $team = $user->team;
+        $tournaments = Tournament::all();
+        return view('coach', compact('team', 'tournaments'));
     }
 
     public function showBracket(Tournament $tournament)
@@ -101,7 +103,11 @@ class MatchController extends Controller
     public function showEditTeamForm()
     {
         $user = auth()->user();
-        $team = $user->team; // Assuming you have a relationship set up in the User model
+        $team = $user->team;
+
+        if (!$team) {
+            return redirect()->route('home')->with('error', 'No team found.');
+        }
 
         return view('coach', compact('team'));
     }

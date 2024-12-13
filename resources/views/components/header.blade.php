@@ -3,10 +3,10 @@
         <div id="logo" class="relative cursor-pointer">
             <img src="{{ asset('img/Logo_img.png') }}" alt="Logo" class="h-12 w-12 transition-transform duration-300 ease-in-out group-hover:scale-110 group-hover:opacity-90 sparkle-effect">
 
-            <div id="navLinks" class="absolute left-full top-0 flex space-x-6 opacity-0 translate-x-[-100%] transition-all duration-300 ease-in-out group-hover:opacity-100 group-hover:translate-x-0">
+            <div id="navLinks" class="absolute left-full top-0 flex space-x-12 opacity-0 translate-x-[-100%] transition-all duration-300 ease-in-out group-hover:opacity-100 group-hover:translate-x-0">
                 <a href="{{ route('home') }}" class="text-black text-lg hover:text-[#065f46] transition-transform transform hover:scale-110">Home</a>
                 <a href="{{ route('stand') }}" class="text-black text-lg hover:text-[#065f46] transition-transform transform hover:scale-110">Leaderboard</a>
-                <a href="{{ route('brackets') }}" class="text-black text-lg hover:text-[#065f46] transition-transform transform hover:scale-110">View the brackets</a>
+                <a href="{{ route('brackets') }}" class="text-black text-lg hover:text-[#065f46] transition-transform transform hover:scale-110" style="width: 130px">View the brackets</a>
                 @auth
                 <a href="{{ route('coach') }}" class="text-black text-lg hover:text-[#065f46] transition-transform transform hover:scale-110">Edit your own team</a>
                 @if(Auth::user()->is_admin)

@@ -21,6 +21,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'team_id',
+        'role'
     ];
 
     /**
@@ -45,6 +47,6 @@ class User extends Authenticatable
 
     public function team()
     {
-        return $this->hasOne(Team::class, 'creator_id'); // Adjust 'creator_id' if necessary
+        return $this->belongsTo(Team::class);
     }
 }
