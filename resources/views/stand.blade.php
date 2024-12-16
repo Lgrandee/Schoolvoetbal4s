@@ -19,7 +19,9 @@
                         <tr>
                             <td class="px-6 py-4 whitespace-nowrap">{{ $index + 1 }}</td>
                             <td class="px-6 py-4 whitespace-nowrap">{{ $team->name }}</td>
-                            <td class="px-6 py-4 whitespace-nowrap">{{ $team->coach }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                {{ $team->coach ? $team->coach->name : 'No coach assigned' }}
+                            </td>
                             <td class="px-6 py-4 whitespace-nowrap">{{ $team->player_count }}</td>
                             <td class="px-6 py-4 whitespace-nowrap">{{ $team->points }}</td>
                             </td>

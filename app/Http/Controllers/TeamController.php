@@ -34,4 +34,9 @@ class TeamController extends Controller
         return view('home', compact('topTeams'));
     }
 
+    public function showTeams()
+    {
+        $teams = Team::with('coach')->orderBy('points', 'desc')->get();
+        return view('stand', compact('teams'));
+    }
 }
