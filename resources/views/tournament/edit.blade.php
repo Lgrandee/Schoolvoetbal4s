@@ -19,19 +19,38 @@
         <h2 class="text-xl font-bold mt-6">Add Teams</h2>
         <form method="POST" action="{{ route('tournament.addTeam', $tournament) }}" class="mt-4">
             @csrf
-            @foreach($teams as $index => $team)
-                <div class="mb-4">
-                    <label for="team_id_{{ $index }}" class="block text-sm font-medium text-gray-700">Select Team</label>
-                    <select name="team_id[]" id="team_id_{{ $index }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50" required>
-                        <option value="">Select a team</option>
-                        @foreach($teams as $team)
-                            <option value="{{ $team->id }}">{{ $team->name }}</option>
-                        @endforeach
-                    </select>
-                </div>
-            @endforeach
-            <button type="submit" class="mt-2 bg-blue-700 text-white px-4 py-2 rounded">Add Teams</button>
+            <div class="grid grid-cols-2 gap-4">
+                @foreach($teams as $team)
+                <div class="flex items-center">
+                    <input type="checkbox"
+                               name="team_id[]"
+                               value="{{ $team->id }}"
+                               id="team_{{ $team->id }}"
+                               class="rounded border-gray-300"
+                               {{ $tournament->teams->contains($team->id) ? 'checked' : '' }}>
+                               <label for="team_{{ $team->id }}" class="ml-2">
+                                   {{ $team->name }}
+                                </label>
+                            </div>
+                            @endforeach
+            </div>
+            <button type="submit" class="mt-4 bg-blue-700 text-white px-4 py-2 rounded">Add Selected Teams</button>
         </form>
+
+        <div class="mt-6">
+            <h3 class="text-lg font-semibold">Current Teams in Tournament</h3>
+            <div class="mt-2">
+                @if($tournament->teams->count() > 0)
+                <ul class="list-disc pl-5">
+                    @foreach($tournament->teams as $team)
+                    <li>{{ $team->name }}</li>
+                    @endforeach
+                </ul>
+                @else
+                <p class="text-gray-500">No teams assigned yet.</p>
+                @endif
+            </div>
+        </div>
 
         <h2 class="text-xl font-bold mt-6">Add Referees</h2>
         <form method="POST" action="{{ route('tournament.addReferee', $tournament) }}" class="mt-4">
@@ -40,7 +59,7 @@
                 <label class="block text-sm font-medium text-gray-700">Select Referees</label>
                 <select name="referee_id[]" multiple class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50" required>
                     @foreach($referees as $referee)
-                        <option value="{{ $referee->id }}">{{ $referee->name }}</option>
+                    <option value="{{ $referee->id }}">{{ $referee->name }}</option>
                     @endforeach
                 </select>
             </div>

@@ -55,6 +55,9 @@ Route::post('tournament/{tournament}/add-team', [TournamentController::class, 'a
 Route::post('tournament/{tournament}/add-referee', [TournamentController::class, 'addReferee'])->name('tournament.addReferee');
 
 Route::get('tournament/{tournament}/bracket', [TournamentController::class, 'showBracket'])->name('tournament.bracket');
+Route::post('/tournament/{tournament}/advance/{team}', [TournamentController::class, 'advance'])
+    ->name('tournament.advance')
+    ->middleware('admin');
 Route::get('brackets', [MatchController::class, 'showBrackets'])->name('brackets');
 
 Route::get('admin/tournament/{tournament}/edit', [TournamentController::class, 'edit'])->name('admin.tournament.edit');

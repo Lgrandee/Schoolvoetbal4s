@@ -17,6 +17,14 @@
                                 {{ $tournament->title }}
                             </a>
                         </h3>
+                        @auth
+                            @if(Auth::user()->is_admin)
+                                <a href="{{ route('tournament.edit', $tournament) }}"
+                                   class="mt-2 inline-block bg-green-500 text-white px-3 py-1 rounded text-sm">
+                                    Manage Teams
+                                </a>
+                            @endif
+                        @endauth
                     </div>
                 @endforeach
             </div>
