@@ -6,6 +6,7 @@ use App\Models\Game;
 use App\Models\Team;
 use App\Models\Goal;
 use App\Models\Tournament;
+use App\Models\TournamentMatch;
 use Illuminate\Http\Request;
 
 class MatchController extends Controller
@@ -20,33 +21,54 @@ class MatchController extends Controller
     public function updateMatchScores(Request $request, $gameId)
     {
         $validated = $request->validate([
-            'team1_score' => 'required|integer',
-            'team2_score' => 'required|integer',
+            'team1_score' => 'required|integer|min:0',
+            'team2_score' => 'required|integer|min:0',
         ]);
 
-        $Game = Game::findOrFail($gameId);
-        $Game->update($validated);
+        $game = Game::findOrFail($gameId);
+        $match = TournamentMatch::where('tournament_id', $game->tournament_id)
+            ->where('team1_id', $game->team1_id)
+            ->where('team2_id', $game->team2_id)
+            ->first();
 
-        // Update points based on scores
-        if ($Game->team1_score > $Game->team2_score) {
-            $team1 = Team::find($Game->team1_id);
-            $team1->points += 3;
-            $team1->save();
-        } elseif ($Game->team2_score > $Game->team1_score) {
-            $team2 = Team::find($Game->team2_id);
-            $team2->points += 3;
-            $team2->save();
-        } else {
-            $team1 = Team::find($Game->team1_id);
-            $team1->points += 1;
-            $team1->save();
+        // Reset points before updating
+        $team1 = Team::find($game->team1_id);
+        $team2 = Team::find($game->team2_id);
 
-            $team2 = Team::find($Game->team2_id);
-            $team2->points += 1;
-            $team2->save();
+        // Remove old points
+        if ($game->team1_score > $game->team2_score) {
+            $team1->points -= 3;
+        } elseif ($game->team2_score > $game->team1_score) {
+            $team2->points -= 3;
+        } elseif ($game->team1_score === $game->team2_score && $game->team1_score !== 0) {
+            $team1->points -= 1;
+            $team2->points -= 1;
         }
 
-        return redirect()->route('admin')->with('success', 'Gme scores updated and points awarded!');
+        // Update game scores
+        $game->update($validated);
+
+        // Award new points
+        if ($game->team1_score > $game->team2_score) {
+            $team1->points += 3;
+            if (!$match->winner_id) {
+                $match->winner_id = $team1->id;
+            }
+        } elseif ($game->team2_score > $game->team1_score) {
+            $team2->points += 3;
+            if (!$match->winner_id) {
+                $match->winner_id = $team2->id;
+            }
+        } elseif ($game->team1_score === $game->team2_score && $game->team1_score !== 0) {
+            $team1->points += 1;
+            $team2->points += 1;
+        }
+
+        $team1->save();
+        $team2->save();
+        $match->save();
+
+        return redirect()->back()->with('success', 'Match scores updated and points awarded!');
     }
 
     public function storeGoal(Request $request, $gameId)
@@ -56,7 +78,7 @@ class MatchController extends Controller
             'minute' => 'required|integer',
         ]);
 
-        $validated['match_id'] = $gameId;
+        $validated['game_id'] = $gameId;
         Goal::create($validated);
 
         return redirect()->back()->with('success', 'Goal recorded!');
@@ -70,28 +92,11 @@ class MatchController extends Controller
         return view('coach', compact('team', 'tournaments'));
     }
 
-    public function showBracket(Tournament $tournament)
-    {
-        $teams = $tournament->teams; // Get teams associated with the tournament
-
-        // Shuffle the teams to randomize matchups
-        $teams = $teams->shuffle();
-
-        // Create matchups
-        $matchups = [];
-        for ($i = 0; $i < count($teams); $i += 2) {
-            if (isset($teams[$i + 1])) {
-                $matchups[] = [$teams[$i], $teams[$i + 1]];
-            }
-        }
-
-        return view('tournament.bracket', compact('tournament', 'matchups'));
-    }
 
     public function showTeams()
     {
-        $teams = Team::all(); // Fetch all teams
-        return view('stand', compact('teams')); // Return a view with the teams data
+        $teams = Team::orderBy('points', 'desc')->get();
+        return view('stand', compact('teams'));
     }
 
     public function showBrackets()
@@ -110,5 +115,20 @@ class MatchController extends Controller
         }
 
         return view('coach', compact('team'));
+    }
+
+    public function showDetails(TournamentMatch $match)
+    {
+        $game = Game::where('tournament_id', $match->tournament_id)
+            ->where('team1_id', $match->team1_id)
+            ->where('team2_id', $match->team2_id)
+            ->with(['goals.player'])
+            ->first();
+
+        return view('match.details', [
+            'match' => $match,
+            'game' => $game,
+            'tournament' => $match->tournament
+        ]);
     }
 }

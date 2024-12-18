@@ -10,15 +10,15 @@ class GameController extends Controller
 {
     public function index()
     {
-        $games = Game::with(['teamOne', 'teamTwo', 'tournament'])->get()->map(function ($game) {
+        $games = Game::with(['team1', 'team2', 'tournament'])->get()->map(function ($game) {
             return [
                 'id' => $game->id,
                 'tournament_id' => $game->tournament_id,
                 'tournament_name' => $game->tournament->title,
                 'team1_id' => $game->team1_id,
-                'team1_name' => $game->teamOne->name,
+                'team1_name' => $game->team1->name,
                 'team2_id' => $game->team2_id,
-                'team2_name' => $game->teamTwo->name,
+                'team2_name' => $game->team2->name,
             ];
         });
 
@@ -28,7 +28,7 @@ class GameController extends Controller
     public function showByTournamentId(Request $request)
     {
         $tournamentId = $request->query('tournament_id');
-        $games = Game::with(['teamOne', 'teamTwo', 'tournament'])
+        $games = Game::with(['team1', 'team2', 'tournament'])
             ->where('tournament_id', $tournamentId)
             ->get()
             ->map(function ($game) {
@@ -37,9 +37,9 @@ class GameController extends Controller
                     'tournament_id' => $game->tournament_id,
                     'tournament_name' => $game->tournament->title,
                     'team1_id' => $game->team1_id,
-                    'team1_name' => $game->teamOne->name,
+                    'team1_name' => $game->team1->name,
                     'team2_id' => $game->team2_id,
-                    'team2_name' => $game->teamTwo->name,
+                    'team2_name' => $game->team2->name,
                 ];
             });
 

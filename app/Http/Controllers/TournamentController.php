@@ -7,6 +7,7 @@ use App\Models\Tournament;
 use App\Models\Team;
 use App\Models\User;
 use App\Models\TournamentMatch;
+use App\Models\Game;
 
 class TournamentController extends Controller
 {
@@ -101,68 +102,39 @@ class TournamentController extends Controller
 
     public function showBracket(Tournament $tournament)
     {
-        // Get or create first round matches
-        $firstRoundMatches = TournamentMatch::where('tournament_id', $tournament->id)
-            ->where('round', 1)
-            ->get();
+        $firstRoundMatches = collect();
+        $rounds = [];
 
-        if ($firstRoundMatches->isEmpty()) {
-            // Only shuffle and create matchups if they don't exist yet
-            $teams = $tournament->teams->shuffle();
-
-            // Create initial matchups
-            for ($i = 0; $i < count($teams); $i += 2) {
-                if (isset($teams[$i + 1])) {
-                    TournamentMatch::create([
-                        'tournament_id' => $tournament->id,
-                        'team1_id' => $teams[$i]->id,
-                        'team2_id' => $teams[$i + 1]->id,
-                        'round' => 1,
-                        'match_number' => ($i / 2) + 1
-                    ]);
-                }
-            }
-
-            // Refresh first round matches
+        if ($tournament->started) {
             $firstRoundMatches = TournamentMatch::where('tournament_id', $tournament->id)
                 ->where('round', 1)
-                ->get();
-        }
-
-        // Check for tournament winner
-        $finalMatch = TournamentMatch::where('tournament_id', $tournament->id)
-            ->whereNotNull('winner_id')
-            ->orderBy('round', 'desc')
-            ->first();
-
-        $winner = null;
-        if ($finalMatch && !TournamentMatch::where('tournament_id', $tournament->id)
-            ->where('round', '>', $finalMatch->round)
-            ->exists()) {
-            $winner = Team::find($finalMatch->winner_id);
-        }
-
-        // Get subsequent rounds
-        $rounds = [];
-        $currentRound = 2;
-        while (true) {
-            $roundMatches = TournamentMatch::where('tournament_id', $tournament->id)
-                ->where('round', $currentRound)
+                ->orderBy('match_number')
                 ->get();
 
-            if ($roundMatches->isEmpty()) {
-                break;
+            // Get matches for subsequent rounds
+            $currentRound = 1;
+            $hasNextRound = true;
+
+            while ($hasNextRound) {
+                $nextRound = $currentRound + 1;
+                $nextRoundMatches = TournamentMatch::where('tournament_id', $tournament->id)
+                    ->where('round', $nextRound)
+                    ->orderBy('match_number')
+                    ->get();
+
+                if ($nextRoundMatches->isEmpty()) {
+                    $hasNextRound = false;
+                } else {
+                    $rounds[] = $nextRoundMatches;
+                    $currentRound++;
+                }
             }
-
-            $rounds[$currentRound - 2] = $roundMatches;
-            $currentRound++;
         }
 
         return view('tournament.bracket', [
             'tournament' => $tournament,
             'matchups' => $firstRoundMatches,
-            'rounds' => $rounds,
-            'winner' => $winner
+            'rounds' => $rounds
         ]);
     }
 
@@ -213,5 +185,107 @@ class TournamentController extends Controller
         $nextMatch->save();
 
         return redirect()->route('tournament.bracket', $tournament);
+    }
+
+    public function signupTeam(Request $request, Tournament $tournament)
+    {
+        $user = auth()->user();
+        $team = $user->team;
+
+        if (!$team) {
+            return back()->with('error', 'You need to have a team to sign up for tournaments.');
+        }
+
+        if ($tournament->teams->contains($team->id)) {
+            return back()->with('error', 'Your team is already signed up for this tournament.');
+        }
+
+        // Check if tournament has reached max teams
+        if ($tournament->teams->count() >= $tournament->max_teams) {
+            return back()->with('error', 'Tournament has reached maximum number of teams.');
+        }
+
+        $tournament->teams()->attach($team->id);
+
+        return back()->with('success', 'Your team "' . $team->name . '" has been successfully signed up for the tournament!');
+    }
+
+    public function startTournament(Tournament $tournament)
+    {
+        if (!auth()->user()->is_admin) {
+            return back()->with('error', 'Unauthorized action.');
+        }
+
+        if ($tournament->teams->count() < 2) {
+            return back()->with('error', 'Need at least 2 teams to start the tournament.');
+        }
+
+        if ($tournament->started) {
+            return back()->with('error', 'Tournament has already started.');
+        }
+
+        $teams = $tournament->teams->shuffle();
+        \Log::info('Creating matches for tournament: ' . $tournament->id);
+        \Log::info('Number of teams: ' . count($teams));
+
+        try {
+            \DB::beginTransaction();
+
+            for ($i = 0; $i < count($teams); $i += 2) {
+                if (isset($teams[$i + 1])) {
+                    $match = TournamentMatch::create([
+                        'tournament_id' => $tournament->id,
+                        'team1_id' => $teams[$i]->id,
+                        'team2_id' => $teams[$i + 1]->id,
+                        'round' => 1,
+                        'match_number' => ($i / 2) + 1
+                    ]);
+
+                    // Create corresponding game record
+                    Game::create([
+                        'tournament_id' => $tournament->id,
+                        'team1_id' => $teams[$i]->id,
+                        'team2_id' => $teams[$i + 1]->id,
+                        'team1_score' => 0,
+                        'team2_score' => 0
+                    ]);
+
+                    \Log::info('Created match and game: ' . $match->id);
+                }
+            }
+
+            $tournament->started = now();
+            $tournament->save();
+
+            \DB::commit();
+            \Log::info('Tournament started successfully');
+
+            return back()->with('success', 'Tournament has been started!');
+        } catch (\Exception $e) {
+            \DB::rollBack();
+            \Log::error('Error starting tournament: ' . $e->getMessage());
+            return back()->with('error', 'Error starting tournament. Please try again.');
+        }
+    }
+
+    public function show(Tournament $tournament)
+    {
+        return redirect()->route('tournament.bracket', $tournament);
+    }
+
+    public function destroy(Tournament $tournament)
+    {
+        if (!auth()->user()->is_admin) {
+            return back()->with('error', 'Unauthorized action.');
+        }
+
+        // Delete all matches associated with this tournament
+        TournamentMatch::where('tournament_id', $tournament->id)->delete();
+
+        // Delete the tournament
+        $tournament->delete();
+
+        return redirect()->route('admin')
+            ->with('success', 'Tournament deleted successfully.');
     }
 }

@@ -20,5 +20,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('/games', [GameController::class, 'index']);
-Route::get('/games', [GameController::class, 'showByTournamentId'])->name('games.tournament');
+Route::get('/games/tournament', [GameController::class, 'showByTournamentId'])->name('games.tournament');
 Route::get('/results', [GameController::class, 'results']);

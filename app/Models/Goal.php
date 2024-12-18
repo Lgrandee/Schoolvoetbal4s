@@ -9,7 +9,7 @@ class Goal extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['player_id', 'match_id', 'minute'];
+    protected $fillable = ['player_id', 'game_id', 'minute'];
 
     public function game()
     {
